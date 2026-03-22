@@ -4,6 +4,7 @@
 .app-background {
   width: 100vw;
   height: 100vh;
+  height: 100dvh; /* Sử dụng Dynamic Viewport Height cho Mobile Safari/Chrome */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -568,58 +569,72 @@
    ============================ */
 @media (max-width: 450px), (max-height: 750px) {
   .screen-container {
-    padding: 10px;
+    padding: 8px; /* Giảm padding ngoại vi */
   }
 
   .game-title {
-    font-size: 2.2rem;
-  }
-
-  .stats-board {
-    height: 100px;
-    margin-top: 5px;
-    padding-bottom: 10px;
-  }
-
-  .stat-emoji {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     margin-bottom: 5px;
   }
 
+  .era-badge {
+    font-size: 0.9rem;
+    margin: 5px 0 2px 0;
+  }
+
+  .stats-board {
+    height: 85px; /* Thu nhỏ mạnh hơn */
+    margin-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .stat-emoji {
+    font-size: 1.2rem;
+    margin-bottom: 3px;
+  }
+
   .stat-label {
-    font-size: 0.55rem !important;
+    font-size: 0.5rem !important;
+    margin-bottom: 4px !important;
   }
 
   .game-card {
-    width: 260px;
-    min-height: 300px;
-    padding: 15px;
+    width: 250px;
+    min-height: 280px; /* Thu nhỏ thẻ bài tối đa */
+    padding: 12px;
   }
   
   .card-question {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .character-name {
-    top: 15px;
-    font-size: 0.8rem;
+    top: 10px;
+    font-size: 0.75rem;
   }
   
   .philosophical-quote {
     margin-top: auto;
-    margin-bottom: 10px;
-    font-size: 0.8rem;
-    max-width: 85%;
-    line-height: 1.3;
+    margin-bottom: env(safe-area-inset-bottom, 15px); /* Tránh phím điều hướng */
+    font-size: 0.75rem;
+    max-width: 92%;
+    line-height: 1.25;
+    padding: 0 5px;
   }
 
   .khatvong-container {
-    margin: 2px auto 5px auto;
+    margin: 0 auto 5px auto;
   }
 
   .alliance-status {
     margin-bottom: 5px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .btn-alliance {
+    bottom: 85px; /* Đẩy sát lên theo thẻ bài */
+    padding: 10px 20px;
+    font-size: 0.85rem;
   }
 }
 
