@@ -582,23 +582,58 @@
    RESPONSIVE MOBILE
    ============================ */
 @media (max-width: 450px), (max-height: 750px) {
-  .game-card {
-    min-height: 340px;
-    padding: 20px 15px;
+  .screen-container {
+    padding: 10px;
   }
-  
-  .card-question {
-    font-size: 1.2rem;
+
+  .game-title {
+    font-size: 2.2rem;
   }
-  
-  .philosophical-quote {
-    margin-top: 25px;
-    font-size: 0.95rem;
+
+  .stats-board {
+    height: 100px;
+    margin-top: 5px;
+    padding-bottom: 10px;
   }
 
   .stat-emoji {
-    font-size: 1.5rem;
-    margin-bottom: 8px;
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+  }
+
+  .stat-label {
+    font-size: 0.55rem !important;
+  }
+
+  .game-card {
+    width: 260px;
+    min-height: 300px;
+    padding: 15px;
+  }
+  
+  .card-question {
+    font-size: 1.1rem;
+  }
+
+  .character-name {
+    top: 15px;
+    font-size: 0.8rem;
+  }
+  
+  .philosophical-quote {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    max-width: 90%;
+    line-height: 1.4;
+  }
+
+  .khatvong-container {
+    margin: 2px auto 5px auto;
+  }
+
+  .alliance-status {
+    margin-bottom: 5px;
+    font-size: 0.75rem;
   }
 }
 
