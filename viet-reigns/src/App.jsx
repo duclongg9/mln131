@@ -7,10 +7,10 @@ import './App.css';
 
 // Hàm xáo trộn mảng (Fisher-Yates Shuffle)
 const shuffleArray = (array) => {
-  const shuffled = [...array]; 
+  const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; 
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   return shuffled;
 };
@@ -21,10 +21,10 @@ const swipeAudio = new Audio('/sounds/swipe.mp3');
 const successAudio = new Audio('/sounds/success.mp3');
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState('start'); 
+  const [currentScreen, setCurrentScreen] = useState('start');
   const [stats, setStats] = useState({ congNhan: 50, nongDan: 50, triThuc: 50, kinhTe: 50 });
   const [cardIndex, setCardIndex] = useState(0);
-  
+
   // State MỚI: Quản lý sức mạnh Liên Minh 6 nhà và Khát Vọng 2045
   const [allianceTurns, setAllianceTurns] = useState(0);
   const [khatVong, setKhatVong] = useState(0);
@@ -46,8 +46,12 @@ export default function App() {
   // Cấu hình âm thanh
   useEffect(() => {
     bgmRef.current.loop = true;
-    bgmRef.current.volume = 0.3; // 30% âm lượng
-    
+    bgmRef.current.volume = 1; // Tăng từ 0.3 -> 0.6
+
+    // Tăng âm thanh hiệu ứng
+    swipeAudio.volume = 0.8;
+    successAudio.volume = 0.9;
+
     // Cleanup khi đóng app
     return () => {
       bgmRef.current.pause();
@@ -60,11 +64,11 @@ export default function App() {
     setCardIndex(0);
     setAllianceTurns(0);
     setKhatVong(0);
-    
+
     // Xào bài và đưa vào State
     const newShuffledDeck = shuffleArray(cardsData);
     setCurrentDeck(newShuffledDeck);
-    
+
     setCurrentScreen('playing');
 
     // Bật nhạc nền (trình duyệt có thể chặn nếu chưa có tương tác người dùng)
@@ -75,10 +79,10 @@ export default function App() {
     if (finalScore > highScore) {
       setHighScore(finalScore);
       localStorage.setItem('vietReignsHighScore', finalScore.toString());
-      
+
       // Phát tiếng Ting! chúc mừng phá kỷ lục
       successAudio.currentTime = 0;
-      successAudio.play().catch(() => {});
+      successAudio.play().catch(() => { });
       return true;
     }
     return false;
@@ -87,7 +91,7 @@ export default function App() {
   const handleChoice = (effect) => {
     // Phát tiếng vuốt thẻ bài
     swipeAudio.currentTime = 0;
-    swipeAudio.play().catch(() => {});
+    swipeAudio.play().catch(() => { });
 
     // Xử lý Buff Liên Minh: Chặn toàn bộ điểm trừ
     const appliedEffect = { ...effect };
@@ -174,7 +178,7 @@ export default function App() {
   const activateAlliance = () => {
     // Chỉ kích hoạt khi đang ở vùng xanh (xử lý logic enable trong GameScreen)
     setAllianceTurns(5); // Buff 5 lượt
-    
+
     // Tạo 2 thẻ NPC Liên Minh
     const npc1 = {
       id: `npc-nganhang-${score}`,
@@ -184,7 +188,7 @@ export default function App() {
       quetPhai: { text: "Giới Tinh Hoa (+Trí, Doanh)", effect: { congNhan: 0, nongDan: 0, triThuc: 25, kinhTe: 25 } },
       trietLy: "Ngân hàng không chỉ là nơi giữ tiền, mà là huyết mạch khơi thông nguồn lực cốt lõi quốc gia."
     };
-    
+
     const npc2 = {
       id: `npc-phanphoi-${score}`,
       nhanVat: "🚢 NHÀ PHÂN PHỐI",
@@ -199,7 +203,7 @@ export default function App() {
     setCurrentDeck(nextDeck);
 
     successAudio.currentTime = 0;
-    successAudio.play().catch(() => {});
+    successAudio.play().catch(() => { });
   };
 
   return (
@@ -207,26 +211,26 @@ export default function App() {
       {currentScreen === 'start' && (
         <StartScreen onStart={startGame} highScore={highScore} />
       )}
-      
+
       {currentScreen === 'playing' && currentDeck.length > 0 && (
-        <GameScreen 
-          stats={stats} 
-          currentCard={currentDeck[cardIndex]} 
-          onMakeChoice={handleChoice} 
+        <GameScreen
+          stats={stats}
+          currentCard={currentDeck[cardIndex]}
+          onMakeChoice={handleChoice}
           score={score}
           allianceTurns={allianceTurns}
           onActivateAlliance={activateAlliance}
           khatVong={khatVong}
         />
       )}
-      
+
       {currentScreen === 'end' && (
-        <EndScreen 
-          isVictory={isVictory} 
-          endMessage={endMessage} 
+        <EndScreen
+          isVictory={isVictory}
+          endMessage={endMessage}
           score={score}
           highScore={highScore}
-          onReset={stopGame} 
+          onReset={stopGame}
         />
       )}
     </div>
