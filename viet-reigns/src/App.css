@@ -1,0 +1,547 @@
+/* ============================
+   GLOBAL & LAYOUT
+   ============================ */
+.app-background {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Biến màu viền khi hoảng loạn */
+.danger-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  box-shadow: inset 0 0 100px rgba(204, 0, 0, 0.8);
+  animation: pulseDanger 0.8s infinite alternate;
+}
+
+/* Background Animated Overlay */
+.app-background::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  /* Sóng biển / Họa tiết xoắn truyền thống SVG Base64 */
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.83-1.658 1.659-.83-.83 1.658-1.659zM25.333 0l-2.025 2.025-1.66-1.66L23.673 0h1.66zm10.74 0l-1.66 1.66 2.025 2.025L37.733 0h-1.66zm15.42 20.25l-1.66 1.66 2.025 2.025L53.153 22h1.66v-1.75l-3.32-3.32-1.66 1.66 3.32 3.32v.34zM0 37.73l1.66-1.66-2.025-2.025L0 34.414v3.316zm0-15.42l1.66-1.66-2.025-2.025L0 18.994v3.316zm54.627-1.66l.83.83-1.658 1.659-.83-.83 1.658-1.659z' fill='%23ffd700' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  animation: bgPan 60s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes bgPan {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5%) rotate(1deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+.screen-container {
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  max-height: 900px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 20px;
+}
+
+.flex-col-center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* ============================
+   START SCREEN & END SCREEN
+   ============================ */
+.game-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  line-height: 1.1;
+  font-weight: 900;
+  color: var(--fpt-orange); /* Gold */
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+}
+
+.game-subtitle {
+  font-size: 1.1rem;
+  color: #ffd700;
+  opacity: 0.8;
+  margin-bottom: 30px;
+  max-width: 80%;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+
+.instructions {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+  font-size: 0.95rem;
+  color: #fdfdfd;
+  border: 1px solid rgba(255, 215, 0, 0.3); /* Gold accent border */
+}
+
+.instructions p {
+  margin-bottom: 8px;
+}
+
+/* ============================
+   GAME SCREEN - STATS
+   ============================ */
+.stats-board {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding-bottom: 20px;
+  height: 130px;
+  z-index: 10;
+}
+
+.era-badge {
+  text-align: center;
+  margin: 10px 0 5px 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--card-bg);
+  opacity: 0.8;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  z-index: 10;
+}
+
+.stat-warning-label {
+  position: absolute;
+  top: -35px;
+  font-size: 0.6rem;
+  font-weight: 900;
+  color: var(--danger-red);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 10px rgba(204, 0, 0, 0.5);
+  animation: flashDanger 0.8s infinite alternate;
+  white-space: nowrap;
+}
+
+@keyframes flashDanger {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0.7; transform: scale(1.05); }
+}
+
+.stat-item-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 25%;
+}
+
+.predictive-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--fpt-orange); /* Gold dot */
+  position: absolute;
+  top: -20px;
+  opacity: 0;
+  box-shadow: 0 0 10px var(--fpt-orange);
+  transition: all 0.2s ease;
+}
+
+.stat-emoji {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  position: relative;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.stat-bar-container {
+  width: 6px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 215, 0, 0.3); /* Gold border for progress bar */
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+
+.stat-bar-fill {
+  width: 100%;
+  background-color: #fff;
+  transition: height 0.3s ease, background-color 0.3s ease;
+}
+
+/* Danger State */
+.stat-danger .stat-bar-fill {
+  background-color: var(--danger-red);
+  box-shadow: 0 0 10px var(--danger-red);
+}
+.stat-danger .stat-emoji {
+  animation: pulseDanger 1s infinite alternate;
+}
+
+/* ============================
+   GAME SCREEN - CARD 
+   ============================ */
+.card-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  perspective: 1000px;
+  z-index: 5;
+}
+
+.game-card {
+  width: 300px;
+  min-height: 400px;
+  background-color: var(--card-bg); /* Giấy Dó */
+  border-radius: 12px;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* Thick shadow and an inset gold rim for that royal dossier feel */
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 0 4px rgba(212, 175, 55, 0.3);
+  position: absolute; 
+  cursor: grab;
+  color: var(--card-text);
+  overflow: hidden;
+  /* Subtle texture for Giấy Dó */
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+.game-card:active {
+  cursor: grabbing;
+}
+
+.character-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #5c3a21; /* Ink brown */
+  margin-bottom: 20px;
+  position: absolute;
+  top: 30px;
+  border-bottom: 2px solid #5c3a21;
+  padding-bottom: 4px;
+}
+
+.card-question {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--card-text);
+}
+
+/* Yes/No Overlays - STAMP STYLE */
+.card-overlay {
+  position: absolute;
+  top: 80px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 6px double;
+  pointer-events: none;
+  z-index: 10;
+  mix-blend-mode: multiply; /* Makes it look like actual ink stamped on paper! */
+  opacity: 0.8; 
+}
+
+.overlay-left {
+  right: 15px;
+  color: var(--danger-red);
+  border-color: var(--danger-red);
+  transform: rotate(15deg);
+}
+
+.overlay-right {
+  left: 15px;
+  color: var(--safety-green);
+  border-color: var(--safety-green);
+  transform: rotate(-15deg);
+}
+
+/* ============================
+   BUTTONS
+   ============================ */
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  padding: 16px 40px;
+  border-radius: 8px;
+  border: 2px solid var(--fpt-orange);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.btn-primary {
+  background-color: var(--bg-secondary);
+  color: var(--fpt-orange);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background-color: var(--fpt-orange);
+  color: var(--bg-primary);
+  box-shadow: 0 6px 20px var(--fpt-orange-glow);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+/* ============================
+   END SCREEN (DEATH/VICTORY)
+   ============================ */
+.end-screen-bg {
+  position: fixed; /* Fix lỗi đè z-index với app-background */
+  inset: 0;
+  background: radial-gradient(circle at center, #4a0000 0%, #1a0000 100%);
+  z-index: 100; /* Nằm trên cùng */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.end-screen-bg.victory {
+  background: radial-gradient(circle at center, #b8860b 0%, #3a2a00 100%);
+}
+
+.end-title-badge {
+  color: var(--card-bg);
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-bottom: 15px;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+  border-bottom: 2px solid var(--fpt-orange);
+  padding-bottom: 10px;
+  animation: dropIn 0.4s ease-out;
+}
+
+.text-defeat {
+  color: var(--fpt-orange);
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2.8rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+  animation: dropIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.text-victory {
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2.8rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+}
+
+.end-card {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 8px;
+  color: var(--card-text);
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  width: 90%;
+  max-width: 400px;
+  border: 4px double #5c3a21; /* Official document border */
+}
+
+.end-message {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  font-weight: 700;
+  margin-bottom: 25px;
+  line-height: 1.5;
+  border-left: 4px solid var(--danger-red);
+  padding-left: 15px;
+  text-align: left;
+}
+
+.victory .end-message {
+  border-left-color: var(--safety-green);
+}
+
+.score-board {
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding-top: 20px;
+  text-align: center;
+}
+
+.score {
+  font-size: 1.1rem;
+  color: #5c3a21;
+}
+
+.score strong {
+  display: block;
+  font-size: 2.5rem;
+  color: var(--bg-primary);
+  font-family: 'Playfair Display', serif;
+  margin-top: 5px;
+}
+
+.new-record-anim {
+  color: var(--bg-primary);
+  font-weight: 900;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 10px;
+  animation: pulseDanger 1.5s infinite alternate;
+}
+
+.philosophical-quote {
+  margin-top: 40px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--fpt-orange);
+  text-align: center;
+  padding: 0 20px;
+  max-width: 400px;
+  line-height: 1.6;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  opacity: 0.9;
+  z-index: 10;
+}
+
+.action-buttons {
+  display: none;
+}
+
+/* ============================
+   KHÁT VỌNG 2045 BAR
+   ============================ */
+.khatvong-container {
+  width: 90%;
+  margin: 5px auto 10px auto;
+  z-index: 10;
+}
+
+.khatvong-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.khatvong-label {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 0.9rem;
+  color: var(--fpt-orange);
+  letter-spacing: 1px;
+}
+
+.khatvong-percent {
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.khatvong-bar-bg {
+  width: 100%;
+  height: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.khatvong-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffd700, #ff4500);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+/* ============================
+   V-ALLIANCE SPECIFIC
+   ============================ */
+.alliance-status {
+  position: absolute;
+  top: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #00d2ff;
+  font-weight: bold;
+  font-size: 0.85rem;
+  z-index: 10;
+  text-transform: uppercase;
+  animation: pulseDanger 1.5s infinite alternate;
+  white-space: nowrap;
+  letter-spacing: 1px;
+}
+
+.btn-alliance {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+  color: white;
+  border: none;
+  padding: 18px 30px;
+  border-radius: 30px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 0 30px rgba(0, 210, 255, 0.8), inset 0 0 10px rgba(255,255,255,0.5);
+  cursor: pointer;
+  z-index: 100;
+  animation: dropIn 0.5s ease-out, pulseDanger 1s infinite alternate;
+}
+
+.btn-alliance:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 0 40px rgba(0, 210, 255, 1);
+}
+
