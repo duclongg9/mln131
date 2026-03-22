@@ -4,6 +4,7 @@ import StartScreen from './components/StartScreen';
 import GameScreen from './components/GameScreen';
 import EndScreen from './components/EndScreen';
 import './App.css';
+import BackgroundLayer from './components/BackgroundLayer';
 
 // Hàm xáo trộn mảng (Fisher-Yates Shuffle)
 const shuffleArray = (array) => {
@@ -208,6 +209,7 @@ export default function App() {
 
   return (
     <div className="app-background">
+      <BackgroundLayer />
       {currentScreen === 'start' && (
         <StartScreen onStart={startGame} highScore={highScore} />
       )}
