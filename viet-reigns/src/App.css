@@ -511,16 +511,16 @@
 
 .btn-alliance {
   position: absolute;
-  top: 50%;
+  bottom: 100px; /* Chuyển từ giữa màn hình xuống dưới cùng để không đè chữ */
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   background: linear-gradient(45deg, #00d2ff, #3a7bd5);
   color: white;
   border: none;
-  padding: 18px 30px;
+  padding: 14px 25px; /* Thu nhỏ nhẹ */
   border-radius: 30px;
   font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -531,7 +531,7 @@
 }
 
 .btn-alliance:hover {
-  transform: translate(-50%, -50%) scale(1.05);
+  transform: translateX(-50%) scale(1.05); /* Giữ lại transform X */
   box-shadow: 0 0 40px rgba(0, 210, 255, 1);
 }
 
