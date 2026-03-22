@@ -6,6 +6,9 @@ export default function GameScreen({ stats, currentCard, onMakeChoice, score, al
   const controls = useAnimation();
   const [swipeDirection, setSwipeDirection] = useState(null);
   
+  // Hiển thị Overlay hướng dẫn khi bắt đầu game
+  const [showTutorial, setShowTutorial] = useState(score === 0);
+
   // Biến chặn tương tác khi thẻ đang bay ra khỏi màn hình
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
@@ -176,6 +179,34 @@ export default function GameScreen({ stats, currentCard, onMakeChoice, score, al
         <button className="btn-alliance" onClick={onActivateAlliance}>
           KÍCH HOẠT LIÊN MINH
         </button>
+      )}
+
+      {/* Màn hình hướng dẫn ban đầu */}
+      {showTutorial && (
+        <div className="tutorial-overlay" onClick={() => setShowTutorial(false)}>
+          <div className="tutorial-content" onClick={(e) => e.stopPropagation()}>
+            <h3 style={{fontFamily: 'Playfair Display', color: '#5c3a21', borderBottom: '2px solid #5c3a21', paddingBottom: '10px', marginBottom: '20px', fontSize: '1.4rem', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'center'}}>Hướng Dẫn Khởi Sự</h3>
+            
+            <p style={{marginBottom: '15px', display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem'}}>
+              <span style={{fontSize: '1.3rem'}}>👆</span> 
+              <span><strong>Vuốt thẻ bài</strong> sang TRÁI (✖️) hoặc sang PHẢI (✔️) để đưa ra các quyết sách điều hành quốc gia.</span>
+            </p>
+            
+            <p style={{marginBottom: '15px', display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem'}}>
+              <span style={{fontSize: '1.3rem'}}>🟡</span> 
+              <span>Để ý <strong>dấu chấm vàng</strong> phía trên 4 nhóm khi kéo thẻ. Chấm càng to, nhóm đó càng chịu tác động mạnh (cộng/trừ).</span>
+            </p>
+            
+            <p style={{marginBottom: '25px', display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.95rem'}}>
+              <span style={{fontSize: '1.3rem'}}>⚖️</span> 
+              <span><strong>MỤC TIÊU SỐNG CÒN:</strong> Đừng để bất kỳ nhóm nào Cạn Kiệt (về 0) hoặc lũng đoạn Đặc Quyền (100).</span>
+            </p>
+            
+            <button className="btn btn-primary" style={{width: '100%', fontSize: '1rem', padding: '12px'}} onClick={() => setShowTutorial(false)}>
+              ĐÃ HIỂU! BẮT ĐẦU
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
