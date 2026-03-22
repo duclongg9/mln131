@@ -24,22 +24,7 @@
   animation: pulseDanger 0.8s infinite alternate;
 }
 
-/* Background Animated Overlay */
-.app-background::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  /* Sóng biển / Họa tiết xoắn truyền thống SVG Base64 */
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.83-1.658 1.659-.83-.83 1.658-1.659zM25.333 0l-2.025 2.025-1.66-1.66L23.673 0h1.66zm10.74 0l-1.66 1.66 2.025 2.025L37.733 0h-1.66zm15.42 20.25l-1.66 1.66 2.025 2.025L53.153 22h1.66v-1.75l-3.32-3.32-1.66 1.66 3.32 3.32v.34zM0 37.73l1.66-1.66-2.025-2.025L0 34.414v3.316zm0-15.42l1.66-1.66-2.025-2.025L0 18.994v3.316zm54.627-1.66l.83.83-1.658 1.659-.83-.83 1.658-1.659z' fill='%23ffd700' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-  background-size: 80px 80px;
-  animation: bgPan 60s linear infinite;
-  z-index: 0;
-  pointer-events: none;
-}
-
+/* Background Animated Overlay - Đã chuyển sang BackgroundLayer.jsx */
 @keyframes bgPan {
   0% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-5%) rotate(1deg); }
@@ -641,9 +626,9 @@
    HISTORICAL PREMIUM BACKGROUND
    ============================ */
 .historical-bg-container {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0; /* Đưa về 0 để nằm trên lớp màu nền nhưng dưới nội dung */
   pointer-events: none;
   overflow: hidden;
 }
